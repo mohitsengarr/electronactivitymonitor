@@ -1,14 +1,28 @@
 {
   "name": "activity-monitor",
   "version": "1.0.0",
-  "description": "CPU activity monitor",
-  "repository": "electron/simple-samples",
+  "description": "Activity Monitor Electron App",
   "main": "app.js",
   "scripts": {
-    "start": "electron app.js"
+    "start": "electron .",
+    "build": "electron-builder --win --x64"
   },
+  "author": "Your Name",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^3.0.2"
+    "electron": "^latest-version",
+    "electron-builder": "^latest-version"
+  },
+  "build": {
+    "appId": "com.yourname.activitymonitor",
+    "productName": "Activity Monitor",
+    "target": "nsis",
+    "directories": {
+      "output": "build"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
   }
 }
