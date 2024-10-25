@@ -1,23 +1,27 @@
 const {app, BrowserWindow} = require('electron')
 const path = require('path')
 const url = require('url')
+const { autoUpdater } = require("electron-updater")
+const log = require('electron-log')
 
 let window = null
 
-// Wait until the app is ready
-app.once('ready', () => {
-  // Create a new window
+// Configure logging
+autoUpdater.logger = log
+autoUpdater.logger.transports.file.level = 'info'
+log.info('App starting...')
+
+function createWindow() {
   window = new BrowserWindow({
-    // Set the initial width to 500px
     width: 500,
-    // Set the initial height to 400px
     height: 400,
-    // set the title bar style
     titleBarStyle: 'hiddenInset',
-    // set the background color to black
     backgroundColor: "#111",
-    // Don't show the window until it's ready, this prevents any white flickering
-    show: false
+    show: false,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false
+    }
   })
 
   window.loadURL(url.format({
@@ -28,5 +32,44 @@ app.once('ready', () => {
 
   window.once('ready-to-show', () => {
     window.show()
+    // Check for updates after window is shown
+    autoUpdater.checkForUpdatesAndNotify()
   })
+}
+
+app.on('ready', () => {
+  createWindow()
+})
+
+// Auto-updater events
+autoUpdater.on('checking-for-update', () => {
+  log.info('Checking for update...')
+})
+
+autoUpdater.on('update-available', (info) => {
+  log.info('Update available.', info)
+})
+
+autoUpdater.on('update-not-available', (info) => {
+  log.info('Update not available.', info)
+})
+
+autoUpdater.on('error', (err) => {
+  log.error('Error in auto-updater. ', err)
+})
+
+autoUpdater.on('download-progress', (progressObj) => {
+  let log_message = "Download speed: " + progressObj.bytesPerSecond
+  log_message = log_message + ' - Downloaded ' + progressObj.percent + '%'
+  log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')'
+  log.info(log_message)
+})
+
+autoUpdater.on('update-downloaded', (info) => {
+  log.info('Update downloaded', info)
+  // Wait 5 seconds, then quit and install
+  // In your app, you could display a dialog asking the user if they want to update
+  setTimeout(() => {
+    autoUpdater.quitAndInstall()  
+  }, 5000)
 })

@@ -1,0 +1,30 @@
+# Ignore build output
+/build
+
+# Ignore node_modules
+/node_modules
+
+# Ignore logs
+*.log
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore environment files
+.env
+
+# Ignore electron-builder output
+/out
+
+# Ignore npm debug log
+npm-debug.log*
+
+# Ignore yarn debug log
+yarn-debug.log*
+yarn-error.log*
+
+# Ignore IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo

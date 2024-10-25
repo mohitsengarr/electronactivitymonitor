@@ -1,24 +1,37 @@
 {
   "name": "activity-monitor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Activity Monitor Electron App",
   "main": "app.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder --win --x64"
+    "build": "electron-builder --win --x64",
+    "deploy": "electron-builder --win --x64 -p always"
   },
   "author": "Your Name",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^latest-version",
-    "electron-builder": "^latest-version"
+    "electron": "25.0.0",
+    "electron-builder": "24.7.0"
+  },
+  "dependencies": {
+    "electron-log": "^5.2.0",
+    "electron-updater": "^6.3.9"
   },
   "build": {
-    "appId": "com.yourname.activitymonitor",
+    "appId": "com.mohitsengarr.activitymonitor",
     "productName": "Activity Monitor",
-    "target": "nsis",
-    "directories": {
-      "output": "build"
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "mohitsengarr",
+        "repo": "electronactivitymonitor"
+      }
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ]
     },
     "nsis": {
       "oneClick": false,
